@@ -3,7 +3,11 @@ import Layout from '../component/Layout/Layout'
 
 const About = () => {
     return (
-        <Layout>
+        <Layout
+            title="About-E-Commerce"
+            description="Kuch Bhi"
+            keyword="Kuch Bhi"
+        >
             <h1>About</h1>
         </Layout>
     )

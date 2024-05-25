@@ -4,8 +4,8 @@ import userModel from "../models/userModel.js";
 
 export const registerController = async (req, res) => {
     try {
-        const { name, email, password, phone, address } = req.body;
-        if (!name || !email || !password || !phone || !address) {
+        const { name, email, password, phone, address, answer } = req.body;
+        if (!name || !email || !password || !phone || !address || !answer) {
             return res.status(400).send({
                 success: false,
                 message: "All fields are required"
@@ -23,7 +23,7 @@ export const registerController = async (req, res) => {
         // hash password and save user detail
         const hashedPassword = await hashPassword(password)
         const user = await new userModel({
-            name, email, phone, address, password: hashedPassword
+            name, email, phone, address, password: hashedPassword, answer
         }).save()
         return res.status(201).send({
             success: true,
@@ -84,6 +84,38 @@ export const loginController = async (req, res) => {
             error
         })
     }
+}
+
+export const forgotPasswordController = async (req, res) => {
+    try {
+        const { email, newPassword, answer } = req.body;
+        if (!email || !newPassword || !answer) {
+            return res.status(500).send({
+                success: false,
+                message: "All fields are required",
+            })
+        }
+        const user = await userModel.findOne({ email, answer })
+        if (!user) {
+            return res.status(500).send({
+                success: false,
+                message: "Wrong Email or Password",
+            })
+        }
+        const hashed = await hashPassword(newPassword);
+        await userModel.findByIdAndUpdate(user._id, { password: hashed }, { new: true })
+        return res.status(200).send({
+            success: true,
+            message: "Password change successfully",
+        })
+    } catch (error) {
+        return res.status(500).send({
+            success: false,
+            message: "Error while reset password",
+            error
+        })
+    }
+
 }
 
 //test
