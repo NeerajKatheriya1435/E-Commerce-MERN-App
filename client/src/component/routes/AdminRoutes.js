@@ -8,7 +8,6 @@ export default function AdminPrivate() {
     const [ok, setOk] = useState(false);
     const [auth] = useAuth();
 
-    console.log(auth.token)
     useEffect(() => {
         const authCheck = async () => {
             const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/user/admin-auth`);

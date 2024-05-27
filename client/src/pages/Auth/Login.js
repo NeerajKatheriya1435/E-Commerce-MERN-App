@@ -24,7 +24,6 @@ const Login = () => {
         e.preventDefault()
         try {
             const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/user/login`, loginForm);
-            console.log(res)
             if (res && res.data.success) {
                 toast.success(res.data.message)
                 setAuth({

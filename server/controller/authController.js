@@ -31,6 +31,7 @@ export const registerController = async (req, res) => {
             user
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).send({
             success: false,
             message: "Error while register data",
@@ -78,6 +79,7 @@ export const loginController = async (req, res) => {
             token
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).send({
             success: false,
             message: "Error while login",
@@ -109,6 +111,7 @@ export const forgotPasswordController = async (req, res) => {
             message: "Password change successfully",
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).send({
             success: false,
             message: "Error while reset password",
