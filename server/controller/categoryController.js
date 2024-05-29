@@ -41,7 +41,7 @@ export const updateCategory = async (req, res) => {
         if (!newName) {
             return res.status(400).send({
                 success: false,
-                message: "Filed is required"
+                message: "Fieled is required"
             })
         }
         await catModel.findByIdAndUpdate(id, { name: newName, slug: slugify(newName) }, { new: true })

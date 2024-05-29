@@ -5,10 +5,11 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { Select } from 'antd'
 import { Option } from 'antd/es/mentions'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const CreateProduct = () => {
+const UpdateProduct = () => {
     const navigate = useNavigate()
+    const params = useParams()
     const [categories, setCategories] = useState([])
     const [photo, setPhoto] = useState("")
     const [name, setName] = useState("")
@@ -16,7 +17,8 @@ const CreateProduct = () => {
     const [quantity, setQuantity] = useState("")
     const [price, setPrice] = useState("")
     const [category, setCategory] = useState("")
-    const [shipping, setShipping] = useState(null)
+    const [shipping, setShipping] = useState("")
+    const [id, setId] = useState("")
 
     //get all category
     const getAllCategory = async () => {
@@ -29,13 +31,38 @@ const CreateProduct = () => {
             }
         } catch (error) {
             console.log(error)
-            toast.error("something went wrong")
+            toast.error("Something went wrong")
         }
     }
     useEffect(() => {
         getAllCategory()
+        // eslint-disable-next-line
     }, [])
-    const handleCreate = async (e) => {
+    //get single product
+    const getSingleProduct = async () => {
+        try {
+            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/get-single-product/${params.slug}`)
+            if (data.success) {
+                setName(data.singleProduct.name)
+                setId(data.singleProduct._id)
+                setDescription(data.singleProduct.description)
+                setQuantity(data.singleProduct.quantity)
+                setPrice(data.singleProduct.price)
+                setShipping(data.singleProduct.shipping)
+                setCategory(data.singleProduct.category._id)
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong")
+        }
+    }
+    useEffect(() => {
+        getSingleProduct()
+        // eslint-disable-next-line
+    }, [])
+
+    //update product
+    const handleUpdate = async (e) => {
         e.preventDefault();
         try {
             const productData = new FormData()
@@ -43,10 +70,10 @@ const CreateProduct = () => {
             productData.append("description", description)
             productData.append("price", price)
             productData.append("quantity", quantity)
-            productData.append("photo", photo)
+            photo && productData.append("photo", photo)
             productData.append("category", category)
             productData.append("shipping", shipping)
-            const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/product/create-new-product`,
+            const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/product/update-product/${id}`,
                 productData)
             if (data?.success) {
                 toast.success(data.message)
@@ -67,7 +94,7 @@ const CreateProduct = () => {
                         <AdminMenu />
                     </div>
                     <div className="col-md-9">
-                        <h2 className='text-center'>Create Product</h2>
+                        <h2 className='text-center'>Update Product</h2>
                         <div className="card p-3">
                             <Select
                                 placeholder="Select category"
@@ -75,6 +102,7 @@ const CreateProduct = () => {
                                 showSearch
                                 className='"form-select mb-3'
                                 onChange={(value) => { setCategory(value) }}
+                                value={category}
                             >
                                 {categories.map((cat) => {
                                     return <Option key={cat._id} value={cat._id}>
@@ -94,9 +122,17 @@ const CreateProduct = () => {
                                 </label>
                             </div>
                             <div className="mb-3">
-                                {photo && (
+                                {photo ? (
                                     <div className="text-center">
                                         <img src={URL.createObjectURL(photo)}
+                                            alt="Error Uploading"
+                                            style={{ height: "30vh" }}
+                                        />
+
+                                    </div>
+                                ) : (
+                                    <div className="text-center">
+                                        <img src={`${process.env.REACT_APP_API}/api/v1/product/get-product-photo/${id}`}
                                             alt="Error Uploading"
                                             style={{ height: "30vh" }}
                                         />
@@ -141,16 +177,20 @@ const CreateProduct = () => {
                                     size="large"
                                     showSearch
                                     className='"form-select mb-3'
-                                    onChange={(value) => { setShipping(value) }}>
+                                    onChange={(value) => {
+                                        setShipping(value);
+                                    }}
+                                    value={shipping == 1 ? "No" : "Yes"}
+                                >
                                     <Option value='1'>No</Option>
                                     <Option value='0'>Yes</Option>
                                 </Select>
                             </div>
                             <div>
                                 <button className="btn btn-primary"
-                                    onClick={handleCreate}
+                                    onClick={handleUpdate}
                                 >
-                                    Create Product
+                                    Update Product
                                 </button>
                             </div>
                         </div>
@@ -161,4 +201,4 @@ const CreateProduct = () => {
     )
 }
 
-export default CreateProduct
+export default UpdateProduct

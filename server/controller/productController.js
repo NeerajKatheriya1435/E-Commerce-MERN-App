@@ -114,13 +114,13 @@ export const updateProduct = async (req, res) => {
     try {
         const { name, description, price, category, quantity } = req.fields
         const { photo } = req.files
-        if (!name || !description || !price || !category || !quantity || !photo) {
+        if (!name || !description || !price || !category || !quantity) {
             return res.status(400).send({
                 success: false,
                 message: "All fields are required",
             })
         }
-        if (photo.size > 200000) {
+        if (photo && photo.size > 200000) {
             return res.status(400).send({
                 success: false,
                 message: "Photo should not be more than 2 mb",

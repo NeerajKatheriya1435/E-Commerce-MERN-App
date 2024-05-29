@@ -4,10 +4,13 @@ import AdminMenu from '../../component/Layout/AdminMenu'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import InputCategory from '../../component/Form/InputCategory';
-
+import { Modal } from "antd"
 const CreateCategory = () => {
     const [category, setCategory] = useState([]);
+    const [visibility, setVisibility] = useState(false)
     const [name, setName] = useState("")
+    const [seleted, setSeleted] = useState(null);
+    const [updateName, setUpdateName] = useState("")
     //create new category
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -42,7 +45,39 @@ const CreateCategory = () => {
     useEffect(() => {
         getAllCategory()
     }, [])
-
+    // to update category
+    const handleUpdate = async (e) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/category/update-category/${seleted._id}`, { newName: updateName })
+            if (data.success) {
+                toast.success(data.message)
+                setSeleted(null)
+                setUpdateName("")
+                setVisibility(false)
+                getAllCategory()
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong")
+        }
+    }
+    //to delete category
+    const handleDelete = async (cat_id) => {
+        try {
+            const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/category/delete-category/${cat_id}`)
+            if (data.success) {
+                toast.success(data.message)
+                setSeleted(null)
+                setUpdateName("")
+                setVisibility(false)
+                getAllCategory()
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong")
+        }
+    }
     return (
         <Layout>
             <div className="container fluid m-3">
@@ -58,7 +93,8 @@ const CreateCategory = () => {
                                 <thead>
                                     <tr>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col">Edit Act</th>
+                                        <th scope="col">Delete Act</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,12 +102,26 @@ const CreateCategory = () => {
                                         return <>
                                             <tr>
                                                 <td key={cat._id}>{cat.name}</td>
-                                                <td><button className='btn btn-primary'>Edit</button></td>
+                                                <td><button
+                                                    className='btn btn-primary'
+                                                    onClick={() => {
+                                                        setVisibility(true);
+                                                        setUpdateName(cat.name)
+                                                        setSeleted(cat)
+                                                    }}
+                                                >Edit</button></td>
+                                                <td><button
+                                                    className='btn btn-danger'
+                                                    onClick={() => { handleDelete(cat._id) }}
+                                                >Delete</button></td>
                                             </tr>
                                         </>
                                     }))}
                                 </tbody>
                             </table>
+                            <Modal onCancel={() => setVisibility(false)} footer={null} open={visibility}>
+                                <InputCategory value={updateName} setValue={setUpdateName} handleSubmit={handleUpdate} />
+                            </Modal>
                         </div>
                     </div>
                 </div>

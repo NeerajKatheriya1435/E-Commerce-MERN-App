@@ -15,9 +15,6 @@
 .myfooter {
     background-color: rgb(149, 149, 152);
     height: 13vh;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
 }
 
 .myfooter h2 {
@@ -36,4 +33,10 @@
     color: rgb(8, 85, 85);
     text-decoration: none;
     font-size: large;
+}
+
+/* for showing single product */
+.productLink {
+    text-decoration: none;
+    color: black;
 }

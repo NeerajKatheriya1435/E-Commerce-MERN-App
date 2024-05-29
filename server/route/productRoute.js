@@ -10,6 +10,6 @@ router.get("/get-single-product/:slug", requireSignIn, isAdmin, getSingleProduct
 router.put("/update-product/:pid", requireSignIn, isAdmin, formidableMiddleware(), updateProduct)
 router.delete("/delete-product/:pid", requireSignIn, isAdmin, deleteProduct)
 router.get("/get-all-product", requireSignIn, isAdmin, getAllProduct)
-router.get("/get-product-photo/:pid", requireSignIn, isAdmin, getProductPhoto)
+router.get("/get-product-photo/:pid", getProductPhoto)
 
 export default router
