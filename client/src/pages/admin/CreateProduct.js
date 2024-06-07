@@ -4,7 +4,6 @@ import AdminMenu from '../../component/Layout/AdminMenu'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { Select } from 'antd'
-import { Option } from 'antd/es/mentions'
 import { useNavigate } from 'react-router-dom'
 
 const CreateProduct = () => {
@@ -77,9 +76,9 @@ const CreateProduct = () => {
                                 onChange={(value) => { setCategory(value) }}
                             >
                                 {categories.map((cat) => {
-                                    return <Option key={cat._id} value={cat._id}>
+                                    return <Select.Option key={cat._id} value={cat._id}>
                                         {cat.name}
-                                    </Option>
+                                    </Select.Option>
                                 })}
                             </Select>
                             <div className="mb-3">
@@ -142,8 +141,8 @@ const CreateProduct = () => {
                                     showSearch
                                     className='"form-select mb-3'
                                     onChange={(value) => { setShipping(value) }}>
-                                    <Option value='1'>No</Option>
-                                    <Option value='0'>Yes</Option>
+                                    <Select.Option value='1'>No</Select.Option>
+                                    <Select.Option value='0'>Yes</Select.Option>
                                 </Select>
                             </div>
                             <div>

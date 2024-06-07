@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 app.use(express.json());
 app.use(cors())
 
+//routes
 app.use("/api/v1/user", authRoute);
 app.use("/api/v1/category", categoryRoute);
 app.use("/api/v1/product", productRoute);

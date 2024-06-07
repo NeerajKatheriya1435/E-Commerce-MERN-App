@@ -1,6 +1,7 @@
 import fs from "fs"
 import slugify from "slugify"
 import productModel from "../models/productModel.js"
+import catModel from "../models/categoryModel.js"
 export const createProductController = async (req, res) => {
     try {
         const { name, description, price, category, quantity } = req.fields
@@ -149,4 +150,124 @@ export const updateProduct = async (req, res) => {
             message: "Error while updating product"
         })
     }
+}
+
+//filter by category
+export const productFilter = async (req, res) => {
+    try {
+        const { checked, radio } = req.body;
+        let args = {};
+        if (checked.length > 0) args.category = checked
+        if (radio.length) args.price = { $gte: radio[0], $lte: radio[1] }
+        const filterProducts = await productModel.find(args);
+        res.status(200).send({
+            success: true,
+            filterProducts
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Error while fething via filters",
+        })
+    }
+}
+
+//count products
+export const countProduct = async (req, res) => {
+    try {
+        const total = await productModel.find({}).estimatedDocumentCount()
+        res.status(200).send({
+            success: true,
+            total
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Error while fething count products"
+        })
+    }
+}
+
+//list base on page
+export const perPageProduct = async (req, res) => {
+    try {
+        const perPage = 6
+        const page = req.params.page ? req.params.page : 1
+        const perPageProduct = await productModel.find({}).select("-photo").skip((page - 1) * perPage).limit(perPage).sort({
+            createdAt: -1
+        })
+        res.status(200).send({
+            success: true,
+            perPageProduct
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Error while fething list of product per page"
+        })
+    }
+}
+
+//search product
+
+export const searchProduct = async (req, res) => {
+    try {
+        const { keywords } = req.params;
+        const result = await productModel.find({
+            $or: [
+                { name: { $regex: keywords, $options: "i" } },
+                { description: { $regex: keywords, $options: "i" } }
+            ]
+        }).select("-photo")
+        res.json(result)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Error while fething behalf of search"
+        })
+    }
+}
+
+//realted product
+export const realtedProduct = async (req, res) => {
+    try {
+        const { pid, cid } = req.params;
+        const similarProduct = await productModel.find({
+            category: cid,
+            _id: { $ne: pid }
+        }).select("-photo").limit(3).populate("category")
+        res.status(200).send({
+            success: true,
+            similarProduct
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Error while fething related product"
+        })
+    }
+}
+//category vise products
+export const categoryProduct = async (req, res) => {
+    try {
+        const category = await catModel.findOne({ slug: req.params.slug })
+        const catProducts = await productModel.find({ category }).populate("category")
+        res.status(200).send({
+            success: true,
+            category,
+            catProducts
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: "Error while fething category wise product"
+        })
+    }
+
 }

@@ -4,7 +4,6 @@ import AdminMenu from '../../component/Layout/AdminMenu'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { Select } from 'antd'
-import { Option } from 'antd/es/mentions'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const UpdateProduct = () => {
@@ -86,6 +85,23 @@ const UpdateProduct = () => {
             toast.error('Something went wrong')
         }
     }
+    const handleDelete = async () => {
+        try {
+            const answer = window.confirm("Are you sure want to delete")
+            if (answer) {
+                const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/product/delete-product/${id}`)
+                if (data.success) {
+                    toast.success(data.message)
+                }
+            } else {
+                return;
+            }
+            navigate("/dashboard/admin/products")
+        } catch (error) {
+            console.log(error)
+            toast.error("Something went wrong")
+        }
+    }
     return (
         <Layout>
             <div className="container fluid m-3">
@@ -105,9 +121,9 @@ const UpdateProduct = () => {
                                 value={category}
                             >
                                 {categories.map((cat) => {
-                                    return <Option key={cat._id} value={cat._id}>
+                                    return <Select.Option key={cat._id} value={cat._id}>
                                         {cat.name}
-                                    </Option>
+                                    </Select.Option>
                                 })}
                             </Select>
                             <div className="mb-3">
@@ -132,10 +148,16 @@ const UpdateProduct = () => {
                                     </div>
                                 ) : (
                                     <div className="text-center">
-                                        <img src={`${process.env.REACT_APP_API}/api/v1/product/get-product-photo/${id}`}
-                                            alt="Error Uploading"
-                                            style={{ height: "30vh" }}
-                                        />
+                                        {id ? (<>
+                                            <img
+                                                className="card-img-top"
+                                                src={`${process.env.REACT_APP_API}/api/v1/product/get-product-photo/${id}`}
+                                                alt={"Error Loading"}
+                                                style={{ height: "30vh", width: "30vh" }}
+                                            />
+                                        </>) : (<>
+                                            Image not found
+                                        </>)}
 
                                     </div>
                                 )}
@@ -180,10 +202,10 @@ const UpdateProduct = () => {
                                     onChange={(value) => {
                                         setShipping(value);
                                     }}
-                                    value={shipping == 1 ? "No" : "Yes"}
+                                    value={shipping === 1 ? "No" : "Yes"}
                                 >
-                                    <Option value='1'>No</Option>
-                                    <Option value='0'>Yes</Option>
+                                    <Select.Option value={1}>No</Select.Option>
+                                    <Select.Option value={0}>Yes</Select.Option>
                                 </Select>
                             </div>
                             <div>
@@ -191,6 +213,11 @@ const UpdateProduct = () => {
                                     onClick={handleUpdate}
                                 >
                                     Update Product
+                                </button>
+                                <button className="btn btn-danger mx-2"
+                                    onClick={handleDelete}
+                                >
+                                    Delete Product
                                 </button>
                             </div>
                         </div>

@@ -7,7 +7,7 @@ const router = express.Router()
 router.post("/create-new-category", requireSignIn, isAdmin, createCategoryController)
 router.put("/update-category/:id", requireSignIn, isAdmin, updateCategory)
 router.delete("/delete-category/:id", requireSignIn, isAdmin, deleteCategory)
-router.get("/fetch-single-category/:slug", requireSignIn, isAdmin, fetchSingleCategory)
-router.get("/fetch-all-category", requireSignIn, isAdmin, fetchAllcategory)
+router.get("/fetch-single-category/:slug", fetchSingleCategory)
+router.get("/fetch-all-category", fetchAllcategory)
 
 export default router

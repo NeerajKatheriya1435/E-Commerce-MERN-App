@@ -18,6 +18,11 @@ import Profile from "./pages/user/Profile";
 import Orders from "./pages/user/Orders";
 import Products from "./pages/admin/Products";
 import UpdateProduct from "./pages/admin/UpdateProduct";
+import SearchProduct from "./pages/SearchProduct";
+import ProductDetails from "./pages/ProductDetails";
+import Category from "./pages/Category";
+import CategoryProducts from "./pages/CategoryProducts";
+import CartPage from "./pages/CartPage";
 
 
 function App() {
@@ -26,6 +31,11 @@ function App() {
 
       {/* Normal user routes */}
       <Route path="/" element={<HomePage />} />
+      <Route path="/product/:slug" element={<ProductDetails />} />
+      <Route path="/search-product" element={<SearchProduct />} />
+      <Route path="/category/all-category" element={<Category />} />
+      <Route path="/category/:slug" element={<CategoryProducts />} />
+      <Route path="/cart" element={<CartPage />} />
       <Route path="/admin" element={<AdminDash />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />

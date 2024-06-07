@@ -38,14 +38,25 @@ const Products = () => {
                                     className='productLink'
                                 >
                                     <div className="card m-2" style={{ width: '18rem' }}>
-                                        <img
-                                            className="card-img-top"
-                                            src={`${process.env.REACT_APP_API}/api/v1/product/get-product-photo/${prod._id}`}
-                                            alt={prod.name}
-                                            style={{ height: "40vh", width: "100%" }} />
+                                        {prod._id ? (<>
+                                            <img
+                                                className="card-img-top"
+                                                src={`${process.env.REACT_APP_API}/api/v1/product/get-product-photo/${prod._id}`}
+                                                alt={prod.name}
+                                                style={{ height: "40vh", width: "100%" }}
+                                            />
+                                        </>) : (<>
+                                            <img
+                                                className="card-img-top"
+                                                src={`https://static.vecteezy.com/system/resources/previews/005/337/799/non_2x/icon-image-not-found-free-vector.jpg`}
+                                                alt={prod.name}
+                                                style={{ height: "40vh", width: "100%" }}
+                                            />
+                                        </>)}
                                         <div className="card-body">
                                             <h5 className="card-title">{prod.name}</h5>
-                                            <p className="card-text">{prod.description}</p>
+                                            <p className="card-text">{prod.description.substring(0, 30)}...</p>
+                                            <p className="card-text">{prod.price}</p>
                                         </div>
                                     </div>
                                 </Link>

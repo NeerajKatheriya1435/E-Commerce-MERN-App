@@ -98,25 +98,23 @@ const CreateCategory = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {category.map((cat => {
-                                        return <>
-                                            <tr>
-                                                <td key={cat._id}>{cat.name}</td>
-                                                <td><button
-                                                    className='btn btn-primary'
-                                                    onClick={() => {
-                                                        setVisibility(true);
-                                                        setUpdateName(cat.name)
-                                                        setSeleted(cat)
-                                                    }}
-                                                >Edit</button></td>
-                                                <td><button
-                                                    className='btn btn-danger'
-                                                    onClick={() => { handleDelete(cat._id) }}
-                                                >Delete</button></td>
-                                            </tr>
-                                        </>
-                                    }))}
+                                    {category.map((cat => (
+                                        <tr key={cat._id}>
+                                            <td >{cat.name}</td>
+                                            <td><button
+                                                className='btn btn-primary'
+                                                onClick={() => {
+                                                    setVisibility(true);
+                                                    setUpdateName(cat.name)
+                                                    setSeleted(cat)
+                                                }}
+                                            >Edit</button></td>
+                                            <td><button
+                                                className='btn btn-danger'
+                                                onClick={() => { handleDelete(cat._id) }}
+                                            >Delete</button></td>
+                                        </tr>
+                                    )))}
                                 </tbody>
                             </table>
                             <Modal onCancel={() => setVisibility(false)} footer={null} open={visibility}>
