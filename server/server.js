@@ -28,8 +28,8 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, "../client/build")))
 
 //api test
-app.use("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "../client/build/index.html"))
+app.use("/", function (req, res) {
+    res.sendFile(path.join(__dirname, "../client/build","index.html"))
 })
 
 //routes
