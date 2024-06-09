@@ -63,7 +63,7 @@ const ProductDetails = () => {
                     <h1>Product Details</h1>
                     <h6>Name : {product.name}</h6>
                     <h6>Description : {product.description}</h6>
-                    <h6>Price : {product.price}</h6>
+                    <h6>Price : ${product.price}</h6>
                     <h6>Category : {product?.category?.name}</h6>
                     <button className='btn btn-secondary mt-2'>Add to Cart</button>
                 </div>
@@ -91,10 +91,12 @@ const ProductDetails = () => {
                                     style={{ height: "40vh", width: "100%" }}
                                 />
                             </>)}
-                            <div className="card-body">
+                            <div className="card-body"
+                                style={{ backgroundColor: "ThreeDFace" }}
+                            >
                                 <h5 className="card-title">{prod.name}</h5>
-                                <p className="card-text">{prod.description.substring(0, 30)}...</p>
-                                <p className="card-text">{prod.price}</p>
+                                <p className="card-text">{prod.description}</p>
+                                <p className="card-text">Price: ${prod.price}</p>
                                 <button onClick={() => navigate(`/product/${prod.slug}`)} className="btn btn-primary mx-1">More Details</button>
                                 <button
                                     onClick={() => {

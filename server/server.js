@@ -5,6 +5,7 @@ import authRoute from "./route/authRoute.js"
 import categoryRoute from "./route/categoryRoute.js"
 import productRoute from "./route/productRoute.js"
 import cors from "cors"
+import path from "path"
 //dotenv configuration
 dotenv.config()
 
@@ -15,13 +16,16 @@ connectDB()
 const app = express();
 const PORT = process.env.PORT
 
-//api test
-app.get("/", (req, res) => {
-    res.status(200).send({ "message": "Welcome to E-Commerce website" })
-})
+
 //middleware
 app.use(express.json());
 app.use(cors())
+app.use(path.join(__dirname, "../client/build"))
+
+//api test
+app.use("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build/index.html"))
+})
 
 //routes
 app.use("/api/v1/user", authRoute);

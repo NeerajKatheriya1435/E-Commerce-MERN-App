@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
     return (
         <div className='myfooter'>
-            <h2>All Right Reserved @GoodTechmind</h2>
+            <h2>All Right Reserved @RK-Tech-Minds</h2>
             <div className="linkContainerFooter">
                 <Link to="/about">About</Link>
                 |

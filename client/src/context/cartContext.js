@@ -8,8 +8,9 @@ const CartProvider = ({ children }) => {
 
     useEffect(() => {
         let existingCartProduct = localStorage.getItem("cart")
+        existingCartProduct = JSON.parse(existingCartProduct)
         if (existingCartProduct) {
-            setCart(JSON.parse(existingCartProduct));
+            setCart(existingCartProduct);
         }
         // eslint-disable-next-line
     }, [])

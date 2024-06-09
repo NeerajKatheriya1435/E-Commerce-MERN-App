@@ -44,10 +44,12 @@ const CategoryProducts = () => {
                                 alt={prod.name}
                                 style={{ height: "40vh", width: "100%" }}
                             />
-                            <div className="card-body">
+                            <div className="card-body"
+                                style={{ backgroundColor: "ThreeDFace" }}
+                            >
                                 <h5 className="card-title">{prod.name}</h5>
                                 <p className="card-text">{prod.description.substring(0, 30)}...</p>
-                                <p className="card-text">{prod.price}</p>
+                                <p className="card-text">Price: ${prod.price}</p>
                                 <button onClick={() => navigate(`/product/${prod.slug}`)} className="btn btn-primary mx-1">More Details</button>
                                 <button
                                     onClick={() => {

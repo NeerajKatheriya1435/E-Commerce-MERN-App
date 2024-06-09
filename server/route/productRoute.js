@@ -1,5 +1,7 @@
 import express from "express";
 import {
+    braintreePayment,
+    braintreeToken,
     categoryProduct,
     countProduct, createProductController, deleteProduct, getAllProduct,
     getProductPhoto, getSingleProduct, perPageProduct,
@@ -25,4 +27,7 @@ router.get("/search-product/:keywords", searchProduct)
 router.get("/realted-product/:pid/:cid", realtedProduct)
 router.get("/category-product/:slug", categoryProduct)
 
+//payment routes
+router.get("/braintree/token", braintreeToken)
+router.post("/braintree/payment", requireSignIn, braintreePayment)
 export default router
