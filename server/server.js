@@ -6,7 +6,7 @@ import categoryRoute from "./route/categoryRoute.js"
 import productRoute from "./route/productRoute.js"
 import cors from "cors"
 import path from "path"
-import {fileURLToPath} from "url"
+import { fileURLToPath } from "url"
 //dotenv configuration
 dotenv.config()
 
@@ -16,7 +16,7 @@ connectDB()
 //esmodule fixed
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
-    
+
 //express app
 const app = express();
 const PORT = process.env.PORT
@@ -28,7 +28,7 @@ app.use(cors())
 app.use(path.join(__dirname, "../client/build"))
 
 //api test
-app.use("*", (req, res) => {
+app.use("*", function (req, res) {
     res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
 
