@@ -6,12 +6,17 @@ import categoryRoute from "./route/categoryRoute.js"
 import productRoute from "./route/productRoute.js"
 import cors from "cors"
 import path from "path"
+import {fileURLToPath} from "url"
 //dotenv configuration
 dotenv.config()
 
 //database configuration
 connectDB()
 
+//esmodule fixed
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
+    
 //express app
 const app = express();
 const PORT = process.env.PORT
